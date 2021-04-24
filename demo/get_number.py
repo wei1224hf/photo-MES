@@ -6,10 +6,17 @@ from imutils.perspective import four_point_transform
 from imutils import contours
 import imutils
 
+
+
+#  1
+#2   3
+#  4
+#5   6
+#  7
 DIGITS_LOOKUP = {
 	(1, 1, 1, 0, 1, 1, 1): 0,
 	(0, 0, 1, 0, 0, 1, 0): 1,
-	(1, 0, 1, 1, 1, 1, 0): 2,
+	(1, 0, 1, 1, 1, 0, 1): 2,
 	(1, 0, 1, 1, 0, 1, 1): 3,
 	(0, 1, 1, 1, 0, 1, 0): 4,
 	(1, 1, 0, 1, 0, 1, 1): 5,
@@ -59,10 +66,24 @@ def getVProjection(image):
     return w_
  
 if __name__ == "__main__":
-    origineImage = cv2.imread("test.png")
+    #print(sys.argv[0])
+    #print(sys.argv[2])
+    arg_area = sys.argv[2].split(',');
+    areas = []
+    idx = 0
+    area = []
+    for ss in arg_area:
+        area.append(int(ss))
+        idx = idx+1
+        if (idx==4):
+            idx = 0            
+            areas.append(area)
+            area = []
+    origineImage = cv2.imread("G:\\project\\photo-MES\\demo\\"+sys.argv[1])
     origineImage = cv2.cvtColor(origineImage,cv2.COLOR_BGR2GRAY)
     if origineImage is None:
         sys.exit("Could not read the image.")
+'''        
     datas = [
     #[314,341,544,686],
     [88,127,168,369 ],
@@ -77,7 +98,9 @@ if __name__ == "__main__":
     [482,511,655,744 ],
     [517,546,653,744 ]
     ]
-    item = datas[0]    
+'''
+    item = areas[0]
+    print(item)
     #for item in datas:
     ball = origineImage[item[0]:item[1],item[2]:item[3]]
     ret,thresh1 = cv2.threshold(ball,127,255,cv2.THRESH_BINARY)
@@ -94,10 +117,10 @@ if __name__ == "__main__":
     dst=cv2.GaussianBlur(thresh1,(1,3),5)
 
     ret,dst = cv2.threshold(dst,127,255,cv2.THRESH_BINARY)
-    cv2.imshow("asdf"+str(item[0]), dst)
+    #cv2.imshow("asdf"+str(item[0]), dst)
     cv2.waitKey(0)    
-    contoursx, hierarchyx = cv2.findContours(dst,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-    print(contoursx);
+    contoursx, hierarchyx = cv2.findContours(dst,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    #print(contoursx);
     #cv2.imshow("asdf"+str(item[0]), hierarchyx)
     #cnts = imutils.grab_contours(contoursx)
     #print(cnts)
@@ -107,23 +130,23 @@ if __name__ == "__main__":
     for c in contoursx:
         # compute the bounding box of the contour
         (x, y, w, h) = cv2.boundingRect(c)
-        print(x,y,w,h)
+        #print(x,y,w,h)
         # if the contour is sufficiently large, it must be a digit
         #if w >= 15 and (h >= 30 and h <= 40):
         digitCnts.append(c)  
-    print(len(contoursx))
+    #print(len(contoursx))
     digitCnts = contours.sort_contours(digitCnts, method="left-to-right")[0]
-    digits = [99]*len(digitCnts)
-    print(digits);
+    digits = [];
+    #print(digits);
     idx = 0
     for c in digitCnts:
         # extract the digit ROI
         (x, y, w, h) = cv2.boundingRect(c)
         roi = dst[y:y + h, x:x + w]
-        cv2.imshow("bbbbbb"+str(idx), roi)
+        #cv2.imshow("bbbbbb", roi)
                 
         if w < 10:
-            digits[idx]=1
+            digits.append(1)
             idx += 1
             continue
         idx += 1
@@ -133,6 +156,7 @@ if __name__ == "__main__":
         # we are going to examine
         (roiH, roiW) = roi.shape
         (dW, dH) = (int(roiW * 0.25), int(roiH * 0.15))
+        #print("roiH,roiW,dW,dH",roiH,roiW,dW,dH)
         dHC = int(roiH * 0.05)
         if(dHC==0):
             dHC=1
@@ -153,7 +177,7 @@ if __name__ == "__main__":
             # extract the segment ROI, count the total number of
             # thresholded pixels in the segment, and then compute
             # the area of the segment
-            print(yA,yB, xA,xB)
+            #print("yA,yB, xA,xB",yA,yB, xA,xB)
             segROI = roi[yA:yB, xA:xB]
 
             total = cv2.countNonZero(segROI)
@@ -162,18 +186,18 @@ if __name__ == "__main__":
             # 50% of the area, mark the segment as "on"
             if (area>0) and (total / float(area)) > 0.5:
                 on[i]= 1
-                cv2.imshow("bbbbbb", segROI)
-                cv2.waitKey(0)
-            print(on)
+                #cv2.imshow("bbbbbb", segROI)
+                #cv2.waitKey(0)
+            #print("on",on)
         # lookup the digit and draw it on the image
         digit = DIGITS_LOOKUP[tuple(on)]
         digits.append(digit)
         #cv2.rectangle(output, (x, y), (x + w, y + h), (0, 255, 0), 1)
         #cv2.putText(output, str(digit), (x - 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 2)        
-    print(digits)
+    print("digits",digits)
     #text = pytesseract.image_to_string(ball,lang="eng")
     #print(text)
-    cv2.waitKey(0)
+    #cv2.waitKey(0)
 '''
     W = getVProjection(ball)
     print(W)
