@@ -28,7 +28,8 @@ DIGITS_LOOKUP = {
  
 if __name__ == "__main__":
     arg_area = sys.argv[2].split(',');
-    #arg_area = ('652,684,571,747,abc,700,731,576,747,ee').split(',')
+    #[1040,1073,564,658 ,"user_assign"],
+    #arg_area = ('844,881,672,746,ffff').split(',')
     areas = []
     idx = 0
     area = []
@@ -46,7 +47,9 @@ if __name__ == "__main__":
     origineImage = cv2.imread("G:\\project\\photo-MES\\demo\\"+sys.argv[1])
     if origineImage is None:
         sys.exit("Could not read the image.")
-    origineImage = cv2.cvtColor(origineImage,cv2.COLOR_BGR2GRAY)  
+    origineImage = cv2.cvtColor(origineImage,cv2.COLOR_BGR2GRAY) 
+    #cv2.imshow("ccccc1", origineImage)
+    #k = cv2.waitKey(0)    
     print("[",end='',sep='')    
     for ii,item in enumerate(areas):
         #挖取区域内的图片
@@ -61,7 +64,7 @@ if __name__ == "__main__":
         dst = cv2.erode(dst,np.ones((1,2),np.uint8))
         ret,dst = cv2.threshold(dst,127,255,cv2.THRESH_BINARY)
         #cv2.imshow("ccccc", dst)
-        k = cv2.waitKey(0)
+        #k = cv2.waitKey(0)
         
         #如果只是判断黑点
         if names[ii].find("__")!=-1:
@@ -72,7 +75,7 @@ if __name__ == "__main__":
                 #cv2.imshow("asdfasdfasdf", roi)
                 #print("w,h",w,h)
                 
-                if w >= 15 and h >= 15 :
+                if w >= 10 and h >= 10 :
                     print("[\"",names[ii]+"\",",1,"],",end='',sep='')
         #如果要判断黑点
         else:
