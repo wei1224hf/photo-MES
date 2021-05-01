@@ -25,10 +25,11 @@ while(True):
     #cv2.imshow('frame',gray)
     gray = cv2.rotate(gray, cv2.ROTATE_90_CLOCKWISE)
     #ret,gray = cv2.threshold(gray,140,255,cv2.THRESH_BINARY)
-    # Display the resulting frame
-    #cv2.imshow('frame2',dst2)
-    sleep(0.1)
-    #cv2.waitKey(0)
+    dim = (793, 1122)
+    resized = cv2.resize(gray, dim, interpolation = cv2.INTER_AREA)
+    cv2.imshow('frame2',resized)
+    #sleep(0.1)
+    cv2.waitKey(0)
              
     cv2.imwrite('G:/project/photo-MES/demo/demo.jpg',gray)
 '''    

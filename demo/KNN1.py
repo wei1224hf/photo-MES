@@ -15,18 +15,23 @@ plt.scatter(red[:,0],red[:,1],80,'r','^')
 # Take Blue families and plot them
 blue = trainData[responses.ravel()==1]
 plt.scatter(blue[:,0],blue[:,1],80,'b','s')
-
-plt.show()
-
-newcomer = np.random.randint(0,100,(1,2)).astype(np.float32)
-plt.scatter(newcomer[:,0],newcomer[:,1],80,'g','o')
-
 #knn = cv2.KNearest()
 knn = cv2.ml.KNearest_create()
 #knn.train(trainData,responses)
 knn.train(trainData,cv2.ml.ROW_SAMPLE,responses)
+#plt.show()
+'''
+newcomer = np.random.randint(0,100,(1,2)).astype(np.float32)
+plt.scatter(newcomer[:,0],newcomer[:,1],80,'g','o')
 #ret, results, neighbours ,dist = knn.find_nearest(newcomer, 3)
 ret, results, neighbours ,dist = knn.findNearest(newcomer, 3)
+'''
+# 10 new comers
+newcomers = np.random.randint(0,100,(10,2)).astype(np.float32)
+plt.scatter(newcomers[:,0],newcomers[:,1],80,'g','o')
+#ret, results,neighbours,dist = knn.find_nearest(newcomer, 3)
+ret, results,neighbours,dist = knn.findNearest(newcomers, 3)
+# The results also will contain 10 labels.
 
 print("result: ", results,"\n")
 print("neighbours: ", neighbours,"\n")
