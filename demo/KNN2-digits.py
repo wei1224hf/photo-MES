@@ -28,6 +28,7 @@ test_labels = train_labels.copy()
 #ret,result,neighbours,dist = knn.find_nearest(test,k=5)
 
 knn = cv2.ml.KNearest_create()
+print(train[0])
 knn.train(train,cv2.ml.ROW_SAMPLE,train_labels)
 #ret, result, neighbours ,dist = knn.findNearest(test,k=5)
 img3 = cv2.imread('3.jpg')

@@ -1,0 +1,10 @@
+{
+    "name": "node-red-project",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "node-red-node-mysql": "~0.1.8",
+        "uuid": "^8.3.2"
+    }
+}
