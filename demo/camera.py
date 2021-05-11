@@ -3,6 +3,7 @@ import cv2
 from time import sleep
 import socket
 
+fpath = 'G:/project/mes-ne/photo-MES/demo/'
 
 #cap = cv2.VideoCapture(0)
 cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
@@ -42,7 +43,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 dim = (793, 1122)
                 resized = cv2.resize(gray, dim, interpolation = cv2.INTER_AREA)
                 #cv2.imshow('frame2',resized)                         
-                cv2.imwrite('G:/project/photo-MES/demo/demo.jpg',gray)
+                cv2.imwrite(fpath+'photo.jpg',gray)
                 my_str_as_bytes = str.encode('1')
                 #conn.sendall(my_str_as_bytes)    
 

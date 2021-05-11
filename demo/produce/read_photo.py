@@ -7,11 +7,11 @@ import imutils
 import sys
 import os
 
-fpath = 'G:/project/photo-MES/demo/produce/'
+fpath = 'G:/project/mes-ne/photo-MES/demo/produce/'
 
 def KNN():
     files = glob.glob(fpath+"../digits/*.jpg")
-    print(len(files))
+
     train = []
     train_labels = []
     for iii,f in enumerate(files):
@@ -204,7 +204,7 @@ if __name__ == "__main__":
             areas.append(area)
             area = []
           
-    img = cv.imread(fpath+"../demo.jpg")
+    img = cv.imread(fpath+"../photo.jpg")
     rotated = readPhotoAndRotate(img)
     knn = KNN()
     
